@@ -1,0 +1,2 @@
+#!/bin/bash
+seq -f "%g%g" -s\\n a z|grep -v oo
