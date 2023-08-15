@@ -1,4 +1,2 @@
 #!/bin/bash
-
 awk -F '\t' '{hosts[$1]++} END {for (host in hosts) printf "%s\t%d\n", host, hosts[host]}' input.log | sort -k2,2nr | head -n 11
-
