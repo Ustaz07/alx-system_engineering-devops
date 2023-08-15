@@ -1,2 +1,2 @@
 #!/bin/bash
-awk -F '\t' '{hosts[$1]++} END {for (host in hosts) printf "%s\t%d\n", host, hosts[host]}' nasa_19950801.tsv | sort -k2,2nr | head -n 11
+cut -f1 -d$'\t' | sort | uniq -c | tr -s ' ' | sort -t' ' -k1 -nr | head -11 | cut -d' ' -f3
