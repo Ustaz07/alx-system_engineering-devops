@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script stops the 7-highlander process without using kill or killall.
+# Find the process ID of 7-highlander
+pid=$(pgrep -o '7-highlander')
+
+# Send a SIGTERM signal using pkill to terminate the process
+pkill -TERM -P "$pid"
