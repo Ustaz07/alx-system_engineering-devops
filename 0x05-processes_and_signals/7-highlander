@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# This script stops the 7-highlander process without using kill or killall.
-# Find the process ID of 7-highlander
-pid=$(pgrep -o '7-highlander')
+# This is a script that displays to infinity and beyond indefinitely, and 'I am invincible!!!' when receiving a SIGTERM
 
-# Send a SIGTERM signal using pkill to terminate the process
-pkill -TERM -P "$pid"
+for (( i=1; i>0; i++ ))
+do
+	echo "To infinity and beyond"
+	sleep 2
+	trap 'echo "I am invincible!!!"' SIGTERM
+done
