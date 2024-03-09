@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script stops the 4-to_infinity_and_beyond process.
+# Find the process ID of 4-to_infinity_and_beyond and send a SIGTERM signal
+
+kill -15 "$(pgrep -f '4-to_infinity_and_beyond')"
