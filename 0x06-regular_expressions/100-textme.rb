@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def extract_format(input)
-  match_data = input.match(/from:(\w+)|to:(\w+)|flags:([0-9:-]+)/)
+  match_data = input.match(/from:(\S+)|to:(\S+)|flags:([-0-9:]+)/)
   match_data ? match_data.captures.compact.join(',') : ''
 end
 
