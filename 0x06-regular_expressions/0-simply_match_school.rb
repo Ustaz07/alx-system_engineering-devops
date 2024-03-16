@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def match_school(string)
-  regex = /School/
+  regex = /Schoool/
   string.scan(regex)
 end
 
