@@ -1,2 +1,12 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/Scho*l/).join
+
+def match_school(string)
+  regex = /School/
+  matches = string.scan(regex)
+  matches.join('')
+end
+
+input_string = ARGV[0]
+result = match_school(input_string)
+
+puts result
