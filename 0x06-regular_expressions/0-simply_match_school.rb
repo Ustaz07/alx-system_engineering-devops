@@ -2,11 +2,10 @@
 
 def match_school(string)
   regex = /School/
-  matches = string.scan(regex)
-  matches.join('')
+  string.scan(regex)
 end
 
 input_string = ARGV[0]
-result = match_school(input_string)
+results = match_school(input_string)
 
-puts result
+results.each { |result| puts result }
