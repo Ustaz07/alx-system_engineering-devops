@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-# connecting to the container and fixing
+# connecting to the container and fixing whatever needed to be fixed
+
+echo "ServerName localhost" >> /etc/apache2.conf
 service apache2 start
