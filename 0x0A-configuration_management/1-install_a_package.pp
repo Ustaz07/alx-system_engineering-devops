@@ -1,7 +1,5 @@
-# Puppet manifest to install Flask package
-
-# Declare package resource to install Flask
+# installs flask from pip3
 package { 'flask':
-  ensure => '2.1.0',
-  provider => 'pip3',
+  ensure   => '2.1.0',
+  provider => 'pip3'
 }
