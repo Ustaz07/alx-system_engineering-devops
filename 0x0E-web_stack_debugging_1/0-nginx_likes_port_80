@@ -11,7 +11,7 @@ if ! systemctl is-active --quiet nginx; then
 fi
 
 # Retrieve active IPv4 IPs of the server
-ipv4_addresses=$(ip -o -4 addr show scope global | awk '{print $4}' | cut -d/ -f1)
+ipv4_addresses=$(ip -o -4 addr show scope global | awk '{print $4}' | cut -d / -f1)
 
 # Configure Nginx to listen on port 80 of each active IPv4 IP
 for ip_address in $ipv4_addresses; do
