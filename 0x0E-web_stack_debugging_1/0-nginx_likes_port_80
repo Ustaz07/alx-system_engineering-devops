@@ -1,26 +1,26 @@
-#!/usr/bin/env bash
-# This script configures Nginx to listen on port 80 of all active IPv4 IPs
+s script configures Nginx to listen on port 80 of all active IPv4 IPs
 
 # Install Nginx if not already installed
 apt-get update
-apt-get install -y nginx
+apt-get install - y nginx
 
 # Check if Nginx is running, and if not, start it
-if ! systemctl is-active --quiet nginx; then
-    systemctl start nginx
+if ! systemctl is -active - -quiet nginx; then
+	    systemctl start nginx
 fi
 
 # Retrieve active IPv4 IPs of the server
-ipv4_addresses=$(ip -o -4 addr show scope global | awk '{print $4}' | cut -d/ -f1)
+ipv4_addresses =$(ip - o - 4 addr show scope global | awk '{print $4}' | cut - d / -f1)
 
 # Configure Nginx to listen on port 80 of each active IPv4 IP
 for ip_address in $ipv4_addresses; do
-    # Check if the listen directive already exists in the default Nginx configuration
-    if ! grep -q "listen $ip_address:80;" /etc/nginx/sites-available/default; then
-        # Add the listen directive for each IP to the default Nginx configuration
-        sed -i "/listen 80 default_server;/ a listen $ip_address:80;" /etc/nginx/sites-available/default
-    fi
-done
+	    # Check if the listen directive already exists in the default Nginx configuration
+	        if ! grep - q "listen $ip_address:80;" / etc/nginx/sites-available/default; then
+			        # Add the listen directive for each IP to the default Nginx configuration
+				        sed - i "/listen 80 default_server;/ a listen $ip_address:80;" / etc/nginx/sites-available/default
+					    fi
+				    done
 
-# Reload Nginx configuration to apply changes
-systemctl reload nginx
+				    # Reload Nginx configuration to apply changes
+				    systemctl reload nginx
+
