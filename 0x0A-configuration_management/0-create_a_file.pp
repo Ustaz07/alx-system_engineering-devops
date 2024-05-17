@@ -1,4 +1,7 @@
-ifile { '/tmp/school':
+# Puppet manifest to create a file in /tmp
+
+# Ensure the file is present
+file { '/tmp/school':
   ensure  => present,
   mode    => '0744',
   owner   => 'www-data',
