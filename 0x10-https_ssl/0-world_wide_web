@@ -1,36 +1,19 @@
 #!/usr/bin/env bash
+# Usage: ./1-world_wide_web <domain> <subdomain>
+# Display information about subdomains.
 
-# Function to display DNS information for a specific subdomain
-display_info() {
-    local domain="$1"
-    local subdomain="$2"
-
-    # Check if subdomain argument is provided
-    if [ -z "$subdomain" ]; then
-        subdomains=("www" "lb-01" "web-01" "web-02")
-    else
-        subdomains=("$subdomain")
-    fi
-
-    # Loop through subdomains and display DNS information
-    for sub in "${subdomains[@]}"; do
-        # Retrieve DNS records for the subdomain
-        info=$(dig "$sub.$domain" | awk '/ANSWER SECTION/ {getline; print}')
-
-        # Extract record type and destination IP address
-        record_type=$(echo "$info" | awk '{print $2}')
-        destination=$(echo "$info" | awk '{print $5}')
-
-        # Display information for the subdomain
-        echo "The subdomain $sub is a $record_type record and points to $destination"
-    done
+domain_information () {
+    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+    echo "$2 $line" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
 }
 
-# Check if domain argument is provided
-if [ -z "$1" ]; then
-    echo "Error: Domain name argument is missing"
-    exit 1
+if [ "$#" == 1 ]
+then
+  domain_information "$1" "www"
+  domain_information "$1" "lb-01"
+  domain_information "$1" "web-01"
+  domain_information "$1" "web-02"
+elif [ "$#" == 2 ]
+then
+  domain_information "$1" "$2"
 fi
-
-# Call function to display DNS information
-display_info "$1" "$2"
