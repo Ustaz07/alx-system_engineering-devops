@@ -1,0 +1,8 @@
+frontend http-in
+    bind *:80
+    mode http
+    option forwardfor
+    reqadd X-Forwarded-Proto:\ http
+
+    # Redirect all HTTP traffic to HTTPS
+    redirect scheme https code 301 if !{ ssl_fc }
