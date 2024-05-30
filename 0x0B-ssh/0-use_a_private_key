@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script connects to a remote server using SSH with a private key and the user ubuntu.
+
+# The IP address of the remote server
+SERVER_IP="100.25.222.8"
+
+# Connect to the remote server using the specified private key and user
+ssh -i ~/.ssh/school ubuntu@$SERVER_IP
