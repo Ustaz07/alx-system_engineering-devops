@@ -21,5 +21,5 @@ chown -R nginx:nginx /var/log/nginx
 chown -R nginx:nginx /var/lib/nginx
 chown -R nginx:nginx /var/www/html
 
-# Start Nginx service
-systemctl restart nginx
+# Start Nginx directly
+nginx -g 'daemon off;'
