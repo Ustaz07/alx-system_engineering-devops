@@ -1,25 +1,18 @@
 #!/usr/bin/env bash
-# This script configures Nginx to run as the nginx user and listen on port 8080
+# Fixes a web server to run Nginx as the nginx user listening on port 8080.
 
-# Install Nginx if it is not installed
-if ! command -v nginx &> /dev/null; then
-  apt-get update
-  apt-get install -y nginx
-fi
+# Update nginx configuration to run as the nginx user
+sudo sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
 
-# Modify the Nginx configuration to run as the nginx user and listen on port 8080
-sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
-sed -i 's/listen 80 default_server;/listen 8080 default_server;/' /etc/nginx/sites-available/default
+# Update default site configuration to listen on port 8080
+sudo sed -i "s/listen 80;/listen 8080;/" /etc/nginx/sites-available/default
+sudo sed -i "s/listen \[::\]:80;/listen \[::\]:8080;/" /etc/nginx/sites-available/default
 
-# Ensure the nginx user exists
-if ! id -u nginx &> /dev/null; then
-  useradd -r -s /bin/false nginx
-fi
+# Ensure nginx configuration file has correct permissions
+sudo chmod 644 /etc/nginx/nginx.conf
 
-# Change ownership of the necessary directories
-chown -R nginx:nginx /var/log/nginx
-chown -R nginx:nginx /var/lib/nginx
-chown -R nginx:nginx /var/www/html
+# Stop Apache if it is running
+sudo pkill apache2
 
-# Start Nginx directly
-nginx -g 'daemon off;'
+# Restart Nginx service
+sudo systemctl restart nginx
