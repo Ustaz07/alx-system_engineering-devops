@@ -1,22 +1,21 @@
-#!/usr/bin/python3
-"""extend your Python script to export data in the JSON format"""
 import json
 import requests
 
 
 def make_all(users=None, todos=None):
     """Turns all payloads into JSON format"""
-    all_list = []
     alljson = {}
+    for user in users:
+        user_id = user.get("id")
+        user_tasks = []
+        for todo in todos:
+            if user_id == todo.get("userId"):
+                user_tasks.append({"username": user.get("username"),
+                                   "task": todo.get("title"),
+                                   "completed": todo.get("completed")})
+        alljson[str(user_id)] = user_tasks
+
     with open("todo_all_employees.json", "w") as f:
-        for i in users:
-            u = i.get("id")
-            for i in todos:
-                if u == i.get("userId"):
-                    all_list.append({"username": users[0].get("username"),
-                                     "task": i.get("title"),
-                                     "completed": i.get("completed")})
-            alljson[u] = all_list
         json.dump(alljson, f)
 
 
