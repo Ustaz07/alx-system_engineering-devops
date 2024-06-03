@@ -1,45 +1,29 @@
 #!/usr/bin/python3
-"""
-Script that uses REST API to fetch user's tasks and export them to JSON format.
-"""
-
+"""Python script to export data in the JSON format."""
 import json
 import requests
 import sys
 
 
-def make_json(users, todos):
-    """Turns payloads into JSON format"""
-    user_id = users[0]['id']
-    username = users[0]['username']
-    tasks = [
-        {
-            "task": todo['title'],
-            "completed": todo['completed'],
-            "username": username
-        }
-        for todo in todos
-    ]
-
-    with open(f"{user_id}.json", "w") as f:
-        json.dump({user_id: tasks}, f)
+def make_json(users=None, todos=None, u=None):
+    """Turns payloads into CSV format"""
+    all_list = []
+    with open(sys.argv[1] + ".json", "w") as f:
+        for i in todos:
+            all_list.append({"task": i.get("title"),
+                             "completed": i.get("completed"),
+                             "username": users[0].get("username")})
+        alljson = {str(u): all_list}
+        json.dump(alljson, f)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
-        print("Usage: ./script.py <employee_id>")
-        sys.exit(1)
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        args_id = {"id": sys.argv[1]}
+        users = requests.get("https://jsonplaceholder.typicode.com/users",
+                             params=args_id).json()
+        args_userid = {"userId": sys.argv[1]}
+        todos = requests.get("https://jsonplaceholder.typicode.com/todos",
+                             params=args_userid).json()
 
-    employee_id = sys.argv[1]
-base_url = "https://jsonplaceholder.typicode.com/users"
-params = {"id": employee_id}
-
-users_response = requests.get(base_url, params=params)
-users = users_response.json()
-base_url = "https://jsonplaceholder.typicode.com/todos"
-params = {"userId": employee_id}
-
-todos_response = requests.get(base_url, params=params)
-todos = todos_response.json()
-
-make_json(users, todos)
+        make_json(users, todos, sys.argv[1])
