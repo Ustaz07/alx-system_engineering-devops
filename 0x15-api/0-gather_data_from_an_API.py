@@ -6,6 +6,7 @@ Fetches and displays TODO list progress for a given employee ID.
 import requests
 import sys
 
+
 def fetch_employee_data(employee_id):
     user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     todos_url = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
@@ -22,6 +23,7 @@ def fetch_employee_data(employee_id):
 
     return user, todos
 
+
 def display_todo_progress(employee_id):
     user, todos = fetch_employee_data(employee_id)
 
@@ -33,6 +35,7 @@ def display_todo_progress(employee_id):
     print(f"Employee {employee_name} is done with tasks({num_done_tasks}/{total_tasks}):")
     for task in done_tasks:
         print(f"\t {task.get('title')}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
