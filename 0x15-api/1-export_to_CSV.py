@@ -1,43 +1,36 @@
 #!/usr/bin/python3
-"""
-Script that uses REST API to fetch user's tasks and export them to CSV format.
-"""
-
+"""Script that uses REST API"""
 import csv
 import requests
 import sys
 
 
-def make_csv(users, todos):
+def make_csv(users=None, todos=None):
     """Turns payloads into CSV format"""
     titles = ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
 
-    with open(f"{users[0]['id']}.csv", "w", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=titles, quoting=csv.QUOTE_ALL)
-        writer.writeheader()
-        for todo in todos:
-            writer.writerow({
-                "USER_ID": todo["userId"],
-                "USERNAME": users[0]["username"],
-                "TASK_COMPLETED_STATUS": todo["completed"],
-                "TASK_TITLE": todo["title"]
-            })
+    with open(sys.argv[1] + ".csv", "w") as f:
+        write = csv.DictWriter(f, fieldnames=titles, quoting=csv.QUOTE_ALL)
+        for i in todos:
+            write.writerow({"USER_ID": i.get("userId"),
+                            "USERNAME": users[0].get("username"),
+                            "TASK_COMPLETED_STATUS": i.get("completed"),
+                            "TASK_TITLE": i.get("title")})
 
-# Adjusting the message to match the expected length
-# main_0.py
-msg_main_0 = "Number of tasks in CSV: OK"
-
-# main_1.py
-msg_main_1 = "User ID and Username: OK"
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
-        print("Usage: ./script.py <employee_id>")
-        sys.exit(1)
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        args_id = {"id": sys.argv[1]}
+        users = requests.get("https://jsonplaceholder.typicode.com/users",
+                             params=args_id).json()
+        args_userid = {"userId": sys.argv[1]}
+        todos = requests.get("https://jsonplaceholder.typicode.com/todos",
+                             params=args_userid).json()
+        todos_len = 0
+        todos_arr = []
+        for i in todos:
+            if i.get("completed"):
+                todos_arr.append(i)
+                todos_len += 1
 
-    employee_id = sys.argv[1]
-    users = requests.get("https://jsonplaceholder.typicode.com/users", params={"id": employee_id}).json()
-    todos = requests.get("https://jsonplaceholder.typicode.com/todos", params={"userId": employee_id}).json()
-
-    make_csv(users, todos)
-
+        make_csv(users, todos)
