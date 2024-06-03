@@ -1,12 +1,6 @@
-#!/usr/bin/python3
-"""
-Export user's tasks to a CSV file.
-"""
-
 import csv
 import requests
 import sys
-
 
 def fetch_user_and_todos(employee_id):
     user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
@@ -21,19 +15,22 @@ def fetch_user_and_todos(employee_id):
 
     return user, todos
 
-
-def export_to_csv(user, todos):
+def validate_csv(user, todos):
     user_id = user["id"]
     user_name = user["username"]
-    file_name = f"{user_id}.csv"
+    expected_file_name = f"{user_id}.csv"
+    expected_num_tasks = len(todos)
 
-    with open(file_name, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-
-        for todo in todos:
-            writer.writerow([user_id, user_name, todo["completed"], todo["title"]])
-
+    # Check if CSV file exists
+    try:
+        with open(expected_file_name, newline='') as file:
+            reader = csv.reader(file)
+            header = next(reader)
+            actual_num_tasks = sum(1 for row in reader)
+            return header == ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"] and \
+                   actual_num_tasks == expected_num_tasks
+    except FileNotFoundError:
+        return False
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or not sys.argv[1].isdigit():
@@ -42,5 +39,9 @@ if __name__ == "__main__":
 
     employee_id = int(sys.argv[1])
     user, todos = fetch_user_and_todos(employee_id)
-    export_to_csv(user, todos)
+    valid_csv = validate_csv(user, todos)
+    if not valid_csv:
+        print("CSV file validation failed")
+    else:
+        print("CSV file validation passed")
 
