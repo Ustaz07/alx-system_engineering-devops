@@ -4,6 +4,7 @@
 sudo apt get update
 sudo apt install nginx
 sudo service nginx status
+sudo ufw 'Nginx HTTP'
 
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
