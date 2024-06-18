@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# performing a 301 redirection
+
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Create a simple index.html file
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the replacement string
+string_for_replacement="server_name _;\n\trewrite ^/redirect_me https://google.com/ permanent;"
+
+# Insert the replacement string into the Nginx configuration
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+# Test the Nginx configuration
+sudo nginx -t
+
+# Reload Nginx to apply the changes
+sudo service nginx reload
