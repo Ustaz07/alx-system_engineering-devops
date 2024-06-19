@@ -10,7 +10,7 @@ cd /var/www/ || return
 sudo chmod 777 html
 
 # Create a simple index.html file
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" > /html/index.html
 
 sudo chmod 755 html
 
