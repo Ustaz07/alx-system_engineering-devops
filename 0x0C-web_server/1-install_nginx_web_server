@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-# Configures a new Ubuntu machine with nginx
+# Install nginx web server
+
 sudo apt-get -y update
 sudo apt-get -y install nginx
-sudo ufw allow "Nginx HTTP" # allow incoming connections from nginx
-# sudo ufw status verbose: should return inactive
+
+# Allow 'Nginx HTTP' through firewall
+sudo ufw allow "Nginx HTTP"
+
+# Write 'Hello World!' to the default Nginx index.html
 cd /var/www/ || return
 sudo chmod 777 html
 echo "Hello World!" > html/index.html
 sudo chmod 755 html
 cd ~ || return
+
+# Test Nginx configuration for any errors
+sudo nginx -t
+
 sudo service nginx restart
