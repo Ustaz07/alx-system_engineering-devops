@@ -12,7 +12,7 @@ sudo chmod 755 html
 cd ~ || return
 
 # Write "Hello World!" to the default Nginx index.html
-echo "Hello World!" | sudo tee /var/www/html/index.html
+#echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Test Nginx configuration for any errors
 sudo nginx -t
