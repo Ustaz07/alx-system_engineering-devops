@@ -22,8 +22,5 @@ string_for_replacement="\tlocation /redirect_me {\n\t\treturn 301 https://www.go
 # Insert the replacement string into the Nginx configuration
 sudo sed -i "52 a \    $string_for_replacement" /etc/nginx/sites-enabled/default
 
-# Test the Nginx configuration
-sudo nginx -t
-
 # Reload Nginx to apply the changes
 sudo service nginx reload
