@@ -17,4 +17,4 @@ echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 # Test the Nginx configuration
 sudo nginx -t
 # Reload Nginx to apply the changes
-sudo service nginx reload
+sudo service nginx restart
