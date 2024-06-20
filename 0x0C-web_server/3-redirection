@@ -1,26 +1,17 @@
 #!/usr/bin/env bash
 # performing a 301 redirection
-
 sudo apt-get update
 sudo apt-get install -y nginx
-
 sudo ufw allow "Nginx HTTP" 
-
 cd /var/www/ || return
 sudo chmod 777 html
-
 # Create a simple index.html file
 echo "Hello World!" > html/index.html
-
 sudo chmod 755 html
-
 cd /etc/nginx/sites-enabled/ || return
-
 # Configuring Nginx to redirect to another page
 string_for_replacement="\tlocation /redirect_me {\n\t\treturn 301 https://www.google.com;\n\t}"
-
 # Insert the replacement string into the Nginx configuration
 sudo sed -i "52 a \    $string_for_replacement" /etc/nginx/sites-enabled/default
-
 # Reload Nginx to apply the changes
-sudo service nginx reload
+sudo service nginx restart
