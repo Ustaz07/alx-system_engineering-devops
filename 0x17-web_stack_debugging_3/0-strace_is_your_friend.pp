@@ -1,4 +1,4 @@
-# fixes Apache 500 error by fixing typo in wordpress
+# To find out why Apache is returning a 500 error
 exec { 'fix typo':
   onlyif  => 'test -e /var/www/html/wp-settings.php',
   command => "sed -i 's/phpp/php/' /var/www/html/wp-settings.php",
