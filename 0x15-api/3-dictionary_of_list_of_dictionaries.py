@@ -6,17 +6,22 @@ import requests
 
 def make_all(users=None, todos=None):
     """Turns all payloads into JSON format"""
-    all_list = []
     alljson = {}
+    for user in users:
+        user_id = user.get("id")
+        username = user.get("username")
+        user_tasks = [
+            {
+                "username": username,
+                "task": todo.get("title"),
+                "completed": todo.get("completed"),
+            }
+            for todo in todos
+            if todo.get("userId") == user_id
+        ]
+        alljson[user_id] = user_tasks
+
     with open("todo_all_employees.json", "w") as f:
-        for i in users:
-            u = i.get("id")
-            for i in todos:
-                if u == i.get("userId"):
-                    all_list.append({"username": users[0].get("username"),
-                                     "task": i.get("title"),
-                                     "completed": i.get("completed")})
-            alljson[u] = all_list
         json.dump(alljson, f)
 
 
