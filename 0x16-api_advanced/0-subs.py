@@ -4,9 +4,11 @@ import requests
 
 def number_of_subscribers(subreddit):
     """Returns the number of subscribers for a given subreddit."""
+    headers = {
+        "User-Agent": "python:com.example.myredditapp:v1.0.0 (by /u/professor07)"
+    }
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {'User-Agent': 'python:subreddit.subscriber.count:v1.0.0 (by /u/yourusername)'}
-    
+
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code == 200:
